@@ -1,0 +1,12 @@
+spring:
+  profiles:
+    active: dev
+
+#配置日志
+logging:
+  #配置日志文件路径
+  #采用相对路径方式将日志文件输出到【log\record.log】
+  level:
+    web: ${logging.level.web}
+  file:
+    name: log\record.log
