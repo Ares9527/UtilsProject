@@ -72,7 +72,7 @@ public class ExcelUtils {
      */
     private static <T> List<T> readExcel(String path, MultipartFile file, Class<T> cls) {
         log.debug("执行导入excel操作");
-        String fileName = null;
+        String fileName;
         List<T> dataList = new ArrayList<>();
         Workbook workbook = null;
         try {
@@ -113,58 +113,59 @@ public class ExcelUtils {
                         classMap.get(columnName).add(field);
                     }
                 });
-
-                // 索引-->columns
-                Map<Integer, List<Field>> reflectionMap = new HashMap<>();
-                // 默认读取第一个sheet
-                Sheet sheet = workbook.getSheetAt(0);
-
-                boolean firstRow = true;
-                for (int i = sheet.getFirstRowNum(); i <= sheet.getLastRowNum(); i++) {
-                    Row row = sheet.getRow(i);
-                    // 首行，提取注解
-                    if (firstRow) {
-                        for (int j = row.getFirstCellNum(); j <= row.getLastCellNum(); j++) {
-                            Cell cell = row.getCell(j);
-                            String cellValue = getCellValue(cell);
-                            if (classMap.containsKey(cellValue)) {
-                                reflectionMap.put(j, classMap.get(cellValue));
-                            }
-                        }
-                        firstRow = false;
-                    } else {
-                        //忽略空白行
-                        if (row == null) {
-                            continue;
-                        }
-                        try {
-                            T t = cls.newInstance();
-                            // 判断是否为空白行
-                            boolean allBlank = true;
-                            for (int k = row.getFirstCellNum(); k <= row.getLastCellNum(); k++) {
-                                if (reflectionMap.containsKey(k)) {
-                                    Cell cell = row.getCell(k);
-                                    String cellValue = getCellValue(cell);
-                                    if (StringUtils.isNotBlank(cellValue)) {
-                                        allBlank = false;
-                                    }
-                                    List<Field> fields = reflectionMap.get(k);
-                                    fields.forEach(x -> {
-                                        try {
-                                            handleField(t, cellValue, x);
-                                        } catch (Exception e) {
-                                            log.error(String.format("reflect field:%s value:%s exception!", x.getName(), cellValue), e);
-                                        }
-                                    });
+                Sheet currentSheet;
+                // 遍历excel表格里每个sheet的数据
+                for (Iterator<Sheet> sheets = workbook.iterator(); sheets.hasNext();) {
+                    currentSheet = sheets.next();
+                    // 索引-->columns
+                    Map<Integer, List<Field>> reflectionMap = new HashMap<>();
+                    boolean firstRow = true;
+                    for (int i = currentSheet.getFirstRowNum(); i <= currentSheet.getLastRowNum(); i++) {
+                        Row row = currentSheet.getRow(i);
+                        // 首行，提取注解
+                        if (firstRow) {
+                            for (int j = row.getFirstCellNum(); j <= row.getLastCellNum(); j++) {
+                                Cell cell = row.getCell(j);
+                                String cellValue = getCellValue(cell);
+                                if (classMap.containsKey(cellValue)) {
+                                    reflectionMap.put(j, classMap.get(cellValue));
                                 }
                             }
-                            if (!allBlank) {
-                                dataList.add(t);
-                            } else {
-                                log.warn(String.format("row:%s is blank ignore!", i));
+                            firstRow = false;
+                        } else {
+                            //忽略空白行
+                            if (row == null) {
+                                continue;
                             }
-                        } catch (Exception e) {
-                            log.error(String.format("parse row:%s exception!", i), e);
+                            try {
+                                T t = cls.newInstance();
+                                // 判断是否为空白行
+                                boolean allBlank = true;
+                                for (int k = row.getFirstCellNum(); k <= row.getLastCellNum(); k++) {
+                                    if (reflectionMap.containsKey(k)) {
+                                        Cell cell = row.getCell(k);
+                                        String cellValue = getCellValue(cell);
+                                        if (StringUtils.isNotBlank(cellValue)) {
+                                            allBlank = false;
+                                        }
+                                        List<Field> fields = reflectionMap.get(k);
+                                        fields.forEach(x -> {
+                                            try {
+                                                handleField(t, cellValue, x);
+                                            } catch (Exception e) {
+                                                log.error(String.format("reflect field:%s value:%s exception!", x.getName(), cellValue), e);
+                                            }
+                                        });
+                                    }
+                                }
+                                if (!allBlank) {
+                                    dataList.add(t);
+                                } else {
+                                    log.warn(String.format("row:%s is blank ignore!", i));
+                                }
+                            } catch (Exception e) {
+                                log.error(String.format("parse row:%s exception!", i), e);
+                            }
                         }
                     }
                 }
