@@ -19,4 +19,15 @@ public class ValidatorTest {
     public void checkIdCard() {
         System.out.println(IdCardUtils.convertIdCardBy15Bit("440421951016815"));
     }
+
+    @Test
+    public void getAgeByIdCard() {
+        System.out.println(IdCardUtils.getAgeByIdCard("440421951016815"));
+    }
+
+    @Test
+    public void getLunarBirthdayByIdCard() {
+        System.out.println(IdCardUtils.getLunarBirthdayByIdCard("440421951016815"));
+    }
+
 }

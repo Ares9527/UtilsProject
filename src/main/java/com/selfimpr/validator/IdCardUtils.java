@@ -408,4 +408,72 @@ public class IdCardUtils {
     public static boolean checkTaiWanPass(String idCardNo) {
         return Pattern.matches(TAI_WAN_REGEX, idCardNo);
     }
+
+
+    // TODO ################################ 获取相关 ################################
+
+    /**
+     * 前置检查 IdCard
+     *
+     * @param idCard
+     * @return
+     */
+    public static String preCheckIdCard(String idCard) {
+        if (StringUtils.isBlank(idCard) ||
+                (idCard.length() != FIFTEEN && idCard.length() != EIGHTEEN)) {
+            return null;
+        }
+        if (idCard.length() == FIFTEEN) {
+            idCard = convertIdCardBy15Bit(idCard);
+        }
+        return idCard;
+    }
+
+    /**
+     * 根据身份证号（15 or 18位）获取生日 月/日
+     *
+     * @param idCard
+     * @return
+     */
+    public static String getBirthdayByIdCard(String idCard) {
+        return preCheckIdCard(idCard).substring(10, 14);
+    }
+
+    /**
+     * 根据身份证号（15 or 18位）计算农历生日
+     *
+     * @param idCard
+     * @return
+     */
+    public static String getLunarBirthdayByIdCard(String idCard) {
+        idCard = preCheckIdCard(idCard);
+        String birthday = idCard.substring(6, 10) + "-" + idCard.substring(10, 12) + "-" + idCard.substring(12, 14);
+        try {
+            return CalendarUtil.solarToLunar(birthday, true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 根据身份证号（15 or 18位）计算年龄
+     *
+     * @param idCard
+     * @return
+     */
+    public static Integer getAgeByIdCard(String idCard) {
+        if (StringUtils.isBlank(idCard) ||
+                (idCard.length() != FIFTEEN && idCard.length() != EIGHTEEN)) {
+            return null;
+        }
+        if (idCard.length() == FIFTEEN) {
+            idCard = convertIdCardBy15Bit(idCard);
+        }
+        String bornYear = idCard.substring(6, 10);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy");
+        String year = df.format(new Date());
+        return Integer.parseInt(year) - Integer.parseInt(bornYear);
+    }
+
 }
