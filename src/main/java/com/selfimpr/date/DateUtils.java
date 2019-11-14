@@ -1,4 +1,4 @@
-package com.selfimpr.Date;
+package com.selfimpr.date;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -63,8 +63,12 @@ public class DateUtils {
      */
     public static long gaps4LocalDateTime(LocalDateTime startTime, LocalDateTime endTime, ChronoUnit unit) {
         Period period = Period.between(LocalDate.from(startTime), LocalDate.from(endTime));
-        if (unit == ChronoUnit.YEARS) return period.getYears();
-        if (unit == ChronoUnit.MONTHS) return period.getYears() * 12 + period.getMonths();
+        if (unit == ChronoUnit.YEARS) {
+            return period.getYears();
+        }
+        if (unit == ChronoUnit.MONTHS) {
+            return period.getYears() * 12 + period.getMonths();
+        }
         return unit.between(startTime, endTime);
     }
 
@@ -78,8 +82,12 @@ public class DateUtils {
      */
     public static long gaps4LocalDate(LocalDate startDate, LocalDate endDate, ChronoUnit unit) {
         Period period = Period.between(startDate, endDate);
-        if (unit == ChronoUnit.YEARS) return period.getYears();
-        if (unit == ChronoUnit.MONTHS) return period.getYears() * 12 + period.getMonths();
+        if (unit == ChronoUnit.YEARS) {
+            return period.getYears();
+        }
+        if (unit == ChronoUnit.MONTHS) {
+            return period.getYears() * 12 + period.getMonths();
+        }
         return startDate.until(endDate, unit);
     }
 
@@ -157,7 +165,6 @@ public class DateUtils {
                 .withNano(999999999);
     }
 
-    // TODO ########################################## 获取相关 结束 ##########################################
 
 
     // TODO ########################################## 转换相关 开始 ##########################################
@@ -292,15 +299,12 @@ public class DateUtils {
         return getWeekAlias(String.valueOf(localDate.getDayOfWeek()));
     }
 
-    // TODO ########################################## 转换相关 结束 ##########################################
-
 
     // TODO ########################################## 校验相关 开始 ##########################################
 
 
-    // TODO ########################################## 校验相关 结束 ##########################################
 
-
+    // other
     /**
      * 将工作日英文转成自定义中文
      *

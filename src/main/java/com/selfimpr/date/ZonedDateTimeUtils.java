@@ -1,4 +1,4 @@
-package com.selfimpr.Date;
+package com.selfimpr.date;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -101,8 +101,12 @@ public class ZonedDateTimeUtils {
     public static long gaps4ZonedDateTime(ZonedDateTime startDate, ZonedDateTime endDate, ChronoUnit unit) {
         // ZonedDateTime 转为 LocalDate 后再比较时间相距
         Period period = Period.between(startDate.toLocalDate(), endDate.toLocalDate());
-        if (unit == ChronoUnit.YEARS) return period.getYears();
-        if (unit == ChronoUnit.MONTHS) return period.getYears() * 12 + period.getMonths();
+        if (unit == ChronoUnit.YEARS) {
+            return period.getYears();
+        }
+        if (unit == ChronoUnit.MONTHS) {
+            return period.getYears() * 12 + period.getMonths();
+        }
         return startDate.until(endDate, unit);
     }
 
@@ -146,7 +150,6 @@ public class ZonedDateTimeUtils {
         return DateUtils.getWeekAlias(String.valueOf(time.getDayOfWeek()));
     }
 
-    // TODO ########################################## 获取相关 结束 ##########################################
 
 
     // TODO ########################################## 转换相关 开始 ##########################################
@@ -200,7 +203,6 @@ public class ZonedDateTimeUtils {
         return Date.from(time.toInstant());
     }
 
-    // TODO ########################################## 转换相关 结束 ##########################################
 
 
 }
