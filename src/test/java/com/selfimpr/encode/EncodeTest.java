@@ -42,7 +42,7 @@ public class EncodeTest {
     @Test
     public void readProperties() {
         PropertiesUtils propertiesUtils = new PropertiesUtils();
-        propertiesUtils.readProperties();
+        propertiesUtils.readProperties("customMsg1.properties");
     }
 
 }
