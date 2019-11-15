@@ -1,5 +1,6 @@
 package com.selfimpr.bean;
 
+import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
@@ -7,16 +8,15 @@ import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.cglib.beans.BeanCopier;
 
 import java.beans.PropertyDescriptor;
-import java.time.ZonedDateTime;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.lang.reflect.Field;
+import java.util.*;
 
 /**
- * Bean操作工具
+ * Bean 相关操作工具类
  */
 public class CustomBeanUtils {
+
+    // TODO #################### *** Bean Copy Relevant Start *** ####################
 
     /**
      * 由于BeanCopier.create方法：
@@ -26,10 +26,11 @@ public class CustomBeanUtils {
      */
     public static Map<String, BeanCopier> beanCopierMap = new HashMap<>();
 
-    // TODO ####################org.springframework.beans.BeanUtils####################
+    // TODO *** org.springframework.beans.BeanUtils ***
 
     /**
      * 通过org.springframework.beans.BeanUtils 复制对象
+     *
      * @param src
      * @param target
      */
@@ -38,7 +39,7 @@ public class CustomBeanUtils {
     }
 
     /**
-     * 通过org.springframework.beans.BeanUtils 复制对象的非空字段
+     * 通过org.springframework.beans.BeanUtils 复制对象的 非空字段
      *
      * @param src
      * @param target
@@ -53,7 +54,7 @@ public class CustomBeanUtils {
      * @param source
      * @return
      */
-    public static String[] getNullPropertyNames(Object source) {
+    private static String[] getNullPropertyNames(Object source) {
         final BeanWrapper wrapper = new BeanWrapperImpl(source);
         PropertyDescriptor[] pds = wrapper.getPropertyDescriptors();
         Set<String> emptyNames = new HashSet<>();
@@ -68,7 +69,7 @@ public class CustomBeanUtils {
     }
 
 
-    // TODO ####################org.springframework.cglib.beans.BeanCopier####################
+    // TODO *** org.springframework.cglib.beans.BeanCopier ***
 
     /**
      * BeanCopier支持两种方式：
@@ -152,5 +153,53 @@ public class CustomBeanUtils {
         return class1.toString() + class2.toString();
     }
 
+
+    // TODO #################### *** Bean transform Start *** ####################
+
+    /**
+     * 实体类 转 Map ——【反射】
+     *
+     * @param object
+     * @return
+     */
+    public static Map<String, Object> entity2MapByReflect(Object object) {
+        Map<String, Object> map = new HashMap(8);
+        for (Field field : object.getClass().getDeclaredFields()) {
+            try {
+                boolean flag = field.isAccessible();
+                field.setAccessible(true);
+                Object o = field.get(object);
+                map.put(field.getName(), o);
+                field.setAccessible(flag);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return map;
+    }
+
+    /**
+     * 实体类 转 Map ——【fastjson】
+     *
+     * @param object
+     * @return
+     */
+    public static Map<String, Object> entity2MapByFastJson(Object object) {
+        return (Map<String, Object>) JSONObject.toJSON(object);
+    }
+
+    /**
+     * List<实体类> 转 List<Map> ——【fastjson】
+     *
+     * @param objectList
+     * @return
+     */
+    public static <T> List<Map<String, T>> entityList2MapListByFastJson(List<T> objectList) {
+        List<Map<String, T>> mapList = new ArrayList<>();
+        for (Object object : objectList) {
+            mapList.add((Map<String, T>) entity2MapByFastJson(object));
+        }
+        return mapList;
+    }
 
 }

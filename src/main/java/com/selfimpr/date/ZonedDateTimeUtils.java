@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.Objects;
 
 /**
- * 基于ZonedDateTime封装的日期工具
+ * 基于ZonedDateTime封装的 相关操作工具类
  * <p>
  * 描述：
  * 1，LocalDateTime总是表示本地日期和时间，要表示一个带时区的日期和时间，我们就需要ZonedDateTime。(ZonedDateTime = LocalDateTime + ZoneId)
@@ -147,9 +147,8 @@ public class ZonedDateTimeUtils {
      * @return String
      */
     public static String getWeekAlias4ZonedDateTime(ZonedDateTime time) {
-        return DateUtils.getWeekAlias(String.valueOf(time.getDayOfWeek()));
+        return CustomDateUtils.getWeekAlias(String.valueOf(time.getDayOfWeek()));
     }
-
 
 
     // TODO ########################################## 转换相关 开始 ##########################################
@@ -202,7 +201,5 @@ public class ZonedDateTimeUtils {
     public static Date convert2Date(ZonedDateTime time) {
         return Date.from(time.toInstant());
     }
-
-
 
 }

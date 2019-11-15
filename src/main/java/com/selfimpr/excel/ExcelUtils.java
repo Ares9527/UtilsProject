@@ -115,7 +115,7 @@ public class ExcelUtils {
                 });
                 Sheet currentSheet;
                 // 遍历excel表格里每个sheet的数据
-                for (Iterator<Sheet> sheets = workbook.iterator(); sheets.hasNext();) {
+                for (Iterator<Sheet> sheets = workbook.iterator(); sheets.hasNext(); ) {
                     currentSheet = sheets.next();
                     // 索引-->columns
                     Map<Integer, List<Field>> reflectionMap = new HashMap<>();
@@ -214,7 +214,6 @@ public class ExcelUtils {
         } else {
             return cell.toString().trim();
         }
-
     }
 
     /**
@@ -266,9 +265,6 @@ public class ExcelUtils {
             field.set(t, constructor.newInstance(value));
         }
     }
-
-    // TODO ###################################### Excel 导入 结束 ######################################
-
 
 
     // TODO ###################################### Excel 导出 开始 ######################################
@@ -449,5 +445,4 @@ public class ExcelUtils {
         }
     }
 
-    // TODO ###################################### Excel 导出 结束 ######################################
 }

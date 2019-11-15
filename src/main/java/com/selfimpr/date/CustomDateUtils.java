@@ -7,7 +7,7 @@ import java.time.temporal.TemporalUnit;
 import java.util.Date;
 
 /**
- * 基于java8 LocalDate，LocalTime，LocalDateTime封装的日期工具
+ * 基于java8 LocalDate，LocalTime，LocalDateTime封装的 相关操作工具类
  * <p>
  * 在新的Java 8中，日期和时间被明确划分为LocalDate和LocalTime，
  * LocalDate无法包含时间，
@@ -17,11 +17,11 @@ import java.util.Date;
  * 备注：
  * 1，实体接收字段前面要加上@DateTimeFormat(pattern=“pattern1”)注解
  */
-public class DateUtils {
+public class CustomDateUtils {
 
     /**
      * 自定义日期格式pattern
-     *
+     * <p>
      * pattern格式：yyyy-MM-dd HH:mm:ss
      * 1.M m是为了区分“月”与“分”，M:月，m:分
      * 2.H h是为了区分12小时制与24小时制,H是24小时制,h是12小时制。
@@ -166,7 +166,6 @@ public class DateUtils {
     }
 
 
-
     // TODO ########################################## 转换相关 开始 ##########################################
 
     /**
@@ -236,7 +235,7 @@ public class DateUtils {
     /**
      * 指定 LocalDateTime 转为 自定义时间格式的 字符串
      *
-     * @param time LocalDateTime
+     * @param time    LocalDateTime
      * @param pattern String
      * @return String
      */
@@ -248,7 +247,7 @@ public class DateUtils {
      * 指定 LocalDate 转为 自定义时间格式的 字符串
      *
      * @param localDate LocalDate
-     * @param pattern String
+     * @param pattern   String
      * @return String
      */
     public static String formatLocalDate2String(LocalDate localDate, String pattern) {
@@ -260,7 +259,7 @@ public class DateUtils {
      * 某时间字符串 转为 自定义时间格式的 LocalDateTime
      *
      * @param timeString String
-     * @param pattern String
+     * @param pattern    String
      * @return LocalDateTime
      */
     public static LocalDateTime string2LocalDateTime(String timeString, String pattern) {
@@ -272,7 +271,7 @@ public class DateUtils {
      * 某时间字符串 转为 自定义时间格式的 LocalDate
      *
      * @param timeString String
-     * @param pattern String
+     * @param pattern    String
      * @return LocalDate
      */
     public static LocalDate string2LocalDate(String timeString, String pattern) {
@@ -303,8 +302,8 @@ public class DateUtils {
     // TODO ########################################## 校验相关 开始 ##########################################
 
 
-
     // other
+
     /**
      * 将工作日英文转成自定义中文
      *

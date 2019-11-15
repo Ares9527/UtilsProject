@@ -1,4 +1,6 @@
-package com.selfimpr.excel;
+package com.selfimpr.entityAndDto;
+
+import com.selfimpr.excel.ExcelColumn;
 
 public class People {
 

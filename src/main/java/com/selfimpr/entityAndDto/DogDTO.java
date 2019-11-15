@@ -1,6 +1,6 @@
-package com.selfimpr.bean;
+package com.selfimpr.entityAndDto;
 
-public class Dog {
+public class DogDTO {
 
     private String name;
 
@@ -8,10 +8,10 @@ public class Dog {
 
     private String color;
 
-    public Dog() {
+    public DogDTO() {
     }
 
-    public Dog(String name, Integer age, String color) {
+    public DogDTO(String name, Integer age, String color) {
         this.name = name;
         this.age = age;
         this.color = color;
@@ -43,7 +43,7 @@ public class Dog {
 
     @Override
     public String toString() {
-        return "Dog{" +
+        return "DogDTO{" +
                 "name='" + name + '\'' +
                 ", age=" + age +
                 ", color='" + color + '\'' +

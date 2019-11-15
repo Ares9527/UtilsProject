@@ -59,6 +59,16 @@ public class IdCardUtils {
      */
     private static final String TAI_WAN_REGEX = "[0-9]{8}(.*)";
 
+    private final static int[] dayArr = new int[]{20, 19, 21, 20, 21, 22, 23,
+            23, 23, 24, 23, 22};
+
+    private final static String[] constellationArr = new String[]{"摩羯座",
+            "水瓶座", "双鱼座", "白羊座", "金牛座", "双子座", "巨蟹座", "狮子座", "处女座", "天秤座",
+            "天蝎座", "射手座", "摩羯座"};
+
+    private final static String[] years = new String[]{"鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊",
+            "猴", "鸡", "狗", "猪"};
+
     /**
      * 验证所有的身份证的合法性
      *
@@ -463,17 +473,41 @@ public class IdCardUtils {
      * @return
      */
     public static Integer getAgeByIdCard(String idCard) {
-        if (StringUtils.isBlank(idCard) ||
-                (idCard.length() != FIFTEEN && idCard.length() != EIGHTEEN)) {
-            return null;
-        }
-        if (idCard.length() == FIFTEEN) {
-            idCard = convertIdCardBy15Bit(idCard);
-        }
+        idCard = preCheckIdCard(idCard);
         String bornYear = idCard.substring(6, 10);
         SimpleDateFormat df = new SimpleDateFormat("yyyy");
         String year = df.format(new Date());
         return Integer.parseInt(year) - Integer.parseInt(bornYear);
+    }
+
+    /**
+     * 根据月日计算星座
+     *
+     * @param idCard
+     * @return
+     */
+    public static String getConstellation(String idCard) {
+        idCard = preCheckIdCard(idCard);
+        Integer month = Integer.valueOf(idCard.substring(10, 12));
+        Integer day = Integer.valueOf(idCard.substring(12, 14));
+        return day < dayArr[month - 1] ? constellationArr[month - 1]
+                : constellationArr[month];
+    }
+
+    /**
+     * 根据年份计算属相
+     *
+     * @param idCard
+     * @return
+     */
+    public static String getYear(String idCard) {
+        idCard = preCheckIdCard(idCard);
+        Integer year = Integer.valueOf(idCard.substring(6, 10));
+        if (year < 1900) {
+            return "未知";
+        }
+        int start = 1900;
+        return years[(year - start) % years.length];
     }
 
 }
