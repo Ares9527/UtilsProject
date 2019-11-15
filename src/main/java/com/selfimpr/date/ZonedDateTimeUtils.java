@@ -1,5 +1,6 @@
 package com.selfimpr.date;
 
+import com.selfimpr.base.BaseTools;
 import org.apache.commons.lang3.StringUtils;
 
 import java.time.Period;
@@ -20,8 +21,6 @@ import java.util.Objects;
  * 3，ZonedDateTime是带时区的日期和时间，可用于时区转换；ZonedDateTime和LocalDateTime可以相互转换。
  */
 public class ZonedDateTimeUtils {
-
-    public static final String pattern1 = "yyyy-MM-dd HH:mm:ss";
 
     // TODO ########################################## 获取相关 开始 ##########################################
 
@@ -174,7 +173,7 @@ public class ZonedDateTimeUtils {
         if (StringUtils.isEmpty(timeString)) {
             return null;
         }
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern1).withZone(ZoneId.of("Asia/Shanghai"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(BaseTools.pattern1).withZone(ZoneId.of("Asia/Shanghai"));
         return ZonedDateTime.parse(timeString, formatter);
     }
 
@@ -188,7 +187,7 @@ public class ZonedDateTimeUtils {
         if (StringUtils.isEmpty(timeString)) {
             return null;
         }
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern1).withZone(ZoneId.of(formatterString));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(BaseTools.pattern1).withZone(ZoneId.of(formatterString));
         return ZonedDateTime.parse(timeString, formatter);
     }
 

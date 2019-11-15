@@ -19,18 +19,6 @@ import java.util.Date;
  */
 public class CustomDateUtils {
 
-    /**
-     * 自定义日期格式pattern
-     * <p>
-     * pattern格式：yyyy-MM-dd HH:mm:ss
-     * 1.M m是为了区分“月”与“分”，M:月，m:分
-     * 2.H h是为了区分12小时制与24小时制,H是24小时制,h是12小时制。
-     */
-    public static final String pattern1 = "yyyy-MM-dd HH:mm:ss";
-    public static final String pattern2 = "yyyy-MM-dd HH:mm:ss.SSS";
-    public static final String pattern3 = "yyyy/MM/dd HH:mm:ss";
-    public static final String pattern4 = "yyyy年MM月dd日 HH:mm:ss";
-
     // TODO ########################################## 获取相关 开始 ##########################################
 
     /**

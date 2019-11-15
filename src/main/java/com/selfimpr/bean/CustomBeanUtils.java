@@ -1,6 +1,7 @@
 package com.selfimpr.bean;
 
 import com.alibaba.fastjson.JSONObject;
+import com.selfimpr.base.BaseTools;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
@@ -8,6 +9,7 @@ import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.cglib.beans.BeanCopier;
 
 import java.beans.PropertyDescriptor;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -163,7 +165,7 @@ public class CustomBeanUtils {
      * @return
      */
     public static Map<String, Object> entity2MapByReflect(Object object) {
-        Map<String, Object> map = new HashMap(8);
+        Map<String, Object> map = new HashMap<>(8);
         for (Field field : object.getClass().getDeclaredFields()) {
             try {
                 boolean flag = field.isAccessible();
@@ -181,25 +183,40 @@ public class CustomBeanUtils {
     /**
      * 实体类 转 Map ——【fastjson】
      *
-     * @param object
+     * @param entity
      * @return
      */
-    public static Map<String, Object> entity2MapByFastJson(Object object) {
-        return (Map<String, Object>) JSONObject.toJSON(object);
+    @SuppressWarnings("unchecked")
+    public static <E> Map<String, Object> entity2MapByFastJson(E entity) {
+        return (Map<String, Object>) JSONObject.toJSON(entity);
     }
 
     /**
      * List<实体类> 转 List<Map> ——【fastjson】
      *
-     * @param objectList
+     * @param entityList
      * @return
      */
-    public static <T> List<Map<String, T>> entityList2MapListByFastJson(List<T> objectList) {
-        List<Map<String, T>> mapList = new ArrayList<>();
-        for (Object object : objectList) {
-            mapList.add((Map<String, T>) entity2MapByFastJson(object));
+    public static <E> List<Map<String, Object>> entityList2MapListByFastJson(List<E> entityList) {
+        List<Map<String, Object>> mapList = new ArrayList<>();
+        for (Object object : entityList) {
+            mapList.add(entity2MapByFastJson(object));
         }
         return mapList;
+    }
+
+    /**
+     * 实体对象 ---> Json字符串
+     *
+     * @param entity 实体对象
+     * @return
+     */
+    public static <E> String object2Json(E entity) {
+        try {
+            return BaseTools.objectMapper.writeValueAsString(entity);
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
 }

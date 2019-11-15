@@ -1,35 +1,36 @@
-//package com.selfimpr.map;
-//
-//import com.alibaba.fastjson.JSON;
-//import com.alibaba.fastjson.JSONObject;
-//import com.selfimpr.entityAndDto.Dog;
-//import com.selfimpr.entityAndDto.People;
-//import org.assertj.core.util.Maps;
-//import org.junit.Test;
-//import org.springframework.boot.test.context.SpringBootTest;
-//
-//import java.util.ArrayList;
-//import java.util.HashMap;
-//import java.util.List;
-//import java.util.Map;
-//
-//@SpringBootTest
-//public class MapTest {
-//
-//    private static People people = new People("小明", 6);
-//    private static People people1 = new People("小明1", 7);
-//    private static People people2 = new People("小明2", 8);
-//
+package com.selfimpr.map;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.selfimpr.bean.CustomBeanUtils;
+import com.selfimpr.entityAndDto.Dog;
+import com.selfimpr.entityAndDto.People;
+import org.assertj.core.util.Maps;
+import org.junit.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@SpringBootTest
+public class MapTest {
+
+    private static People people = new People("小明", 6);
+    private static People people1 = new People("小明1", 7);
+    private static People people2 = new People("小明2", 8);
+
 //    @Test
 //    public void string2Map() {
 //        System.out.println(MapUtils.string2MapByFastJson("{\"name\":\"小明\",\"age\":\"16\",\"color\":\"yellow\"}"));
 //    }
 //
-//    @Test
-//    public void entity2Map2() {
-//        Map<String, Object> map = MapUtils.entity2MapByFastJson(people);
-//        System.out.println(map.get("name"));
-//    }
+    @Test
+    public void entity2Map2() {
+        Map<String, Object> map = CustomBeanUtils.entity2MapByFastJson(people);
+        System.out.println(map.get("name"));
+    }
 //
 //    @Test
 //    public void map2Object() {
@@ -69,4 +70,4 @@
 //        System.out.println(mapList.size());
 //        System.out.println(mapList.get(2).get("name"));
 //    }
-//}
+}
