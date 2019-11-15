@@ -1,5 +1,6 @@
 package com.selfimpr.encode;
 
+import com.selfimpr.file.PropertiesUtils;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -36,6 +37,12 @@ public class EncodeTest {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void readProperties() {
+        PropertiesUtils propertiesUtils = new PropertiesUtils();
+        propertiesUtils.readProperties();
     }
 
 }
