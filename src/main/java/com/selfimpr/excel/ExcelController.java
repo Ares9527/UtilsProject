@@ -1,6 +1,7 @@
 package com.selfimpr.excel;
 
 import com.selfimpr.entityAndDto.People;
+import com.selfimpr.entityAndDto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
@@ -66,6 +67,15 @@ public class ExcelController {
     public List<People> uploadExcelByMultipartFile(@RequestParam(value = "uploadFile") MultipartFile file) {
         log.debug("uploadExcelByMultipartFile");
         return ExcelUtils.uploadExcel(file, People.class);
+    }
+
+    /**
+     * 获取resources下的excel文件
+     */
+    @GetMapping(value = "/getExcel4Resoucres")
+    public List<UserDTO> getExcel4Resoucres() {
+        log.debug("getExcel4Resoucres");
+        return ExcelUtils.uploadExcel(UserDTO.class, "excel/user.xlsx");
     }
 
 }

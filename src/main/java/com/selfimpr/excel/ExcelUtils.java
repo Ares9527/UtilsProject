@@ -1,6 +1,7 @@
 package com.selfimpr.excel;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.CharUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -10,6 +11,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -40,13 +42,13 @@ public class ExcelUtils {
     /**
      * 根据路径导入excel
      *
-     * @param path
+     * @param localPath
      * @param cls
      * @param <T>
      * @return
      */
-    public static <T> List<T> uploadExcel(String path, Class<T> cls) {
-        return readExcel(path, null, cls);
+    public static <T> List<T> uploadExcel(String localPath, Class<T> cls) {
+        return readExcel(localPath, null, cls, null);
     }
 
     /**
@@ -58,32 +60,59 @@ public class ExcelUtils {
      * @return
      */
     public static <T> List<T> uploadExcel(MultipartFile file, Class<T> cls) {
-        return readExcel(null, file, cls);
+        return readExcel(null, file, cls, null);
+    }
+
+    /**
+     * 导入Resources下的excel文件
+     *
+     * @param <T>
+     * @param cls
+     * @param <T>
+     * @param systemPath Resources下的excel文件路径
+     * @return
+     */
+    public static <T> List<T> uploadExcel(Class<T> cls, String systemPath) {
+        return readExcel(null, null, cls, systemPath);
     }
 
     /**
      * 读取excel文件数据
      *
-     * @param path
-     * @param cls
-     * @param file
-     * @param <T>
+     * @param path 本地excel路径
+     * @param cls 对应实体类型
+     * @param file excel文件
+     * @param systemPath Resources下的excel文件路径
      * @return
      */
-    private static <T> List<T> readExcel(String path, MultipartFile file, Class<T> cls) {
+    private static <T> List<T> readExcel(String path, MultipartFile file, Class<T> cls, String systemPath) {
         log.debug("执行导入excel操作");
-        String fileName;
+        String fileName = null;
         List<T> dataList = new ArrayList<>();
         Workbook workbook = null;
         try {
-            InputStream inputStream;
+            InputStream inputStream = null;
+            // 上传类型一，根据本地excel文件路径上传
             if (StringUtils.isNotEmpty(path)) {
                 File localFile = new File(path);
                 fileName = localFile.getName();
                 inputStream = new FileInputStream(localFile);
-            } else {
+            }
+            // 上传类型二，直接根据excel文件上传
+            if (file != null) {
                 fileName = file.getOriginalFilename();
                 inputStream = file.getInputStream();
+            }
+            // 上传类型三，根据Recourses下的excel文件路径上传
+            if (StringUtils.isNotEmpty(systemPath)) {
+                final String[] split = systemPath.split("/");
+                if (split.length > 0) {
+                    fileName = split[split.length - 1];
+                }
+                ClassPathResource classPathResource = new ClassPathResource(systemPath);
+                InputStream in = classPathResource.getInputStream();
+                // 解决本地可以，线上读取失败的问题
+                inputStream = IOUtils.toBufferedInputStream(in);
             }
             if (!fileName.matches("^.+\\.(?i)(xls)$") && !fileName.matches("^.+\\.(?i)(xlsx)$")) {
                 log.error("上传文件格式不正确");
