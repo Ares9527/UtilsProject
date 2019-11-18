@@ -5,6 +5,7 @@ import org.apache.commons.codec.binary.Base64;
 import javax.crypto.Cipher;
 import java.io.*;
 import java.security.*;
+import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
@@ -33,15 +34,15 @@ public class RsaUtil {
     private static final int MAX_DECRYPT_BLOCK = 128;
 
     /**
-     * 公钥存放地址 TODO 待改为从application获取路径
+     * 公钥存放地址
      *
      */
-    private static final String publicKeyPath = "E://rsa/publicKey.pem";
+    private static String publicKeyPath;
 
     /**
-     * 私钥存放地址 TODO 待改为从application获取路径
+     * 私钥存放地址
      */
-    private static final String privateKeyPath = "E://rsa/privateKey.pem";
+    private static String privateKeyPath;
 
     /**
      * 公钥
@@ -58,29 +59,49 @@ public class RsaUtil {
      */
     private static KeyFactory keyFactory = null;
 
-    // TODO 生成密钥对后打开
-//    static {
-//        try {
-//            keyFactory = KeyFactory.getInstance("RSA");
-//
-//            // 法一：公钥对象和私钥 key对象 为持久化文件
-////            publicKey = (PublicKey) getKeyByPath(publicKeyPath);
-////            privateKey = (PrivateKey) getKeyByPath(privateKeyPath);
-//
-//            // 法二：公钥对象和私钥 字符串 为持久化文件
-//            byte[] publicDecodedKey = getDecodedKey(publicKeyPath);
-//            X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(publicDecodedKey);
-//            publicKey = keyFactory.generatePublic(publicKeySpec);
-//
-//            byte[] privateDecodedKey = getDecodedKey(privateKeyPath);
-//            PKCS8EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(privateDecodedKey);
-//            privateKey = keyFactory.generatePrivate(privateKeySpec);
-//        } catch (NoSuchAlgorithmException e) {
-//            e.printStackTrace();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+    public static void setPublicKeyPath(String path) {
+        publicKeyPath = path;
+        try {
+            // 法一：公钥对象和私钥 key对象 为持久化文件
+//            publicKey = (PublicKey) getKeyByPath(publicKeyPath);
+
+            // 法二：公钥对象和私钥 字符串 为持久化文件
+            byte[] publicDecodedKey = getDecodedKey(publicKeyPath);
+            X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(publicDecodedKey);
+            publicKey = keyFactory.generatePublic(publicKeySpec);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InvalidKeySpecException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void setPrivateKeyPath(String path) {
+        privateKeyPath = path;
+        try {
+            // 法一：公钥对象和私钥 key对象 为持久化文件
+//            privateKey = (PrivateKey) getKeyByPath(privateKeyPath);
+
+            // 法二：公钥对象和私钥 字符串 为持久化文件
+            byte[] privateDecodedKey = getDecodedKey(privateKeyPath);
+            PKCS8EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(privateDecodedKey);
+            privateKey = keyFactory.generatePrivate(privateKeySpec);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InvalidKeySpecException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static {
+        try {
+            keyFactory = KeyFactory.getInstance("RSA");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * 创建密钥对

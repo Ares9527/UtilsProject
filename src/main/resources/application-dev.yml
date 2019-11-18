@@ -2,3 +2,10 @@
 logging:
   level:
     web: debug
+
+custom:
+  path:
+    rsa:
+      # 手机RSA加密专用秘钥
+      phonePublicKeyPath: E://rsa/publicKey.pem
+      phonePrivateKeyPath: E://rsa/privateKey.pem

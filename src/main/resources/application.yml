@@ -10,3 +10,9 @@ logging:
     web: ${logging.level.web}
   file:
     name: log\record.log
+
+custom:
+  path:
+    rsa:
+      phonePublicKeyPath: 123
+      phonePrivateKeyPath: 33
