@@ -24,10 +24,10 @@ public class EncodeTest {
     @Test
     public void base64() {
         String passowrd = "12345";
-        String encodeBase64 = EncodeUtils.encodeBase64(passowrd.getBytes());
+        String encodeBase64 = EncodeUtils.encodeBase64String(passowrd.getBytes());
         System.out.println("encodeBase64: " + encodeBase64);
 
-        String encodeUrlSafeBase64 = EncodeUtils.encodeUrlSafeBase64(passowrd.getBytes());
+        String encodeUrlSafeBase64 = EncodeUtils.encodeBase64URLSafeString(passowrd.getBytes());
         System.out.println("encodeUrlSafeBase64: " + encodeUrlSafeBase64);
 
         byte[] bytes = EncodeUtils.decodeBase64(encodeBase64);

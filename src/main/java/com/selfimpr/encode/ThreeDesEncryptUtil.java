@@ -38,7 +38,7 @@ public class ThreeDesEncryptUtil {
         IvParameterSpec ips = new IvParameterSpec(IV.getBytes());
         cipher.init(Cipher.ENCRYPT_MODE, deskey, ips);
         byte[] encryptData = cipher.doFinal(plainText.getBytes(ENCODING));
-        return EncodeUtils.encodeBase64(encryptData);
+        return EncodeUtils.encodeBase64String(encryptData);
     }
 
     /**
