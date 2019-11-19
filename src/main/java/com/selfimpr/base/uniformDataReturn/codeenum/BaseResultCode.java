@@ -6,24 +6,25 @@ package com.selfimpr.base.uniformDataReturn.codeenum;
 public enum BaseResultCode implements CodeEnums {
 
     SUCCESS(0, "成功"),
-    FEAILED(1, "失败");
+    FEAILED(1, "失败"),
+    PARAMETERS_ERROR(2, "参数错误");
     // 待扩展
 
-    private int code;
-    private String desc;
+    private Integer code;
+    private String codeDesc;
 
-    BaseResultCode(int code, String desc) {
+    BaseResultCode(Integer code, String codeDesc) {
         this.code = code;
-        this.desc = desc;
+        this.codeDesc = codeDesc;
     }
 
     @Override
-    public int getCode() {
+    public Integer getCode() {
         return code;
     }
 
     @Override
-    public String getDesc() {
-        return desc;
+    public String getCodeDesc() {
+        return codeDesc;
     }
 }

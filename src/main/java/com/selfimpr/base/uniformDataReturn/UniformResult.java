@@ -23,12 +23,22 @@ public class UniformResult<T> implements Serializable {
      */
     private T data;
 
+    /**
+     * 报错原因描述
+     */
+    private String errorCause;
+
     public UniformResult() {
     }
 
     public UniformResult(HeadData head, T data) {
         this.head = head;
         this.data = data;
+    }
+
+    public UniformResult(String errorCause) {
+        this();
+        this.errorCause = errorCause;
     }
 
     public HeadData getHead() {
@@ -47,7 +57,16 @@ public class UniformResult<T> implements Serializable {
         this.data = data;
     }
 
+    public String getErrorCause() {
+        return errorCause;
+    }
+
+    public void setErrorCause(String errorCause) {
+        this.errorCause = errorCause;
+    }
+
     // TODO 基础
+
     /**
      * 成功默认返回
      *
@@ -60,13 +79,23 @@ public class UniformResult<T> implements Serializable {
     }
 
     /**
-     * 成功默认返回
+     * 失败默认返回
      *
      * @param <T>
      * @return
      */
     public static <T> UniformResult<T> failed() {
-        return constructResult(BaseResultCode.FEAILED, null);
+        return constructResult(BaseResultCode.FEAILED);
+    }
+
+    /**
+     * 自定义错误返回
+     *
+     * @param <T>
+     * @return
+     */
+    public static <T> UniformResult<T> failed(CodeEnums codeEnums, String errorCause) {
+        return constructResult(codeEnums, errorCause);
     }
 
     // TODO 例：用户相关
@@ -78,7 +107,18 @@ public class UniformResult<T> implements Serializable {
      * @return
      */
     public static <T> UniformResult<T> userQuerySuccessNoData() {
-        return constructResult(UserResultCode.NODATA, null);
+        return constructResult(UserResultCode.NODATA);
+    }
+
+    /**
+     * 构造统一结果返回
+     *
+     * @param codeEnums
+     * @param <T>
+     * @return
+     */
+    private static <T> UniformResult<T> constructResult(CodeEnums codeEnums) {
+        return constructResult(codeEnums);
     }
 
     /**
@@ -90,9 +130,33 @@ public class UniformResult<T> implements Serializable {
      * @return
      */
     private static <T> UniformResult<T> constructResult(CodeEnums codeEnums, T data) {
+        return constructResult(codeEnums, data, null);
+    }
+
+    /**
+     * 构造统一结果返回
+     *
+     * @param codeEnums
+     * @param <T>
+     * @return
+     */
+    private static <T> UniformResult<T> constructResult(CodeEnums codeEnums, String errorCause) {
+        return constructResult(codeEnums, null, errorCause);
+    }
+
+    /**
+     * 构造统一结果返回
+     *
+     * @param codeEnums
+     * @param data
+     * @param <T>
+     * @return
+     */
+    private static <T> UniformResult<T> constructResult(CodeEnums codeEnums, T data, String errorCause) {
         UniformResult<T> result = new UniformResult<>();
-        result.setHead(new HeadData(codeEnums.getCode(), codeEnums.getDesc()));
+        result.setHead(new HeadData(codeEnums.getCode(), codeEnums.getCodeDesc()));
         result.setData(data);
+        result.setErrorCause(errorCause);
         return result;
     }
 }

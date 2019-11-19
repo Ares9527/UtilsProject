@@ -5,24 +5,24 @@ package com.selfimpr.base.uniformDataReturn.codeenum;
  */
 public enum UserResultCode implements CodeEnums {
 
-    NODATA(10,"查询成功无记录"),
+    NODATA(10, "查询成功无记录"),
     ACCOUNT_ERROR(11, "账户不存在或被禁用");
 
-    private int code;
-    private String desc;
+    private Integer code;
+    private String codeDesc;
 
-    UserResultCode(int code, String desc) {
+    UserResultCode(Integer code, String codeDesc) {
         this.code = code;
-        this.desc = desc;
+        this.codeDesc = codeDesc;
     }
 
     @Override
-    public int getCode() {
+    public Integer getCode() {
         return code;
     }
 
     @Override
-    public String getDesc() {
-        return desc;
+    public String getCodeDesc() {
+        return codeDesc;
     }
 }
