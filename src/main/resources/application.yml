@@ -13,6 +13,12 @@ logging:
 
 custom:
   path:
+    pic:
+      zoomPicPath: ${custom.path.pic.zoomPicPath}
+      rotatePicPath: ${custom.path.pic.rotatePicPath}
+      waterMarkPicPath: ${custom.path.pic.waterMarkPicPath}
+      tailorPicPath: ${custom.path.pic.tailorPicPath}
+      transferFormatPicPath: ${custom.path.pic.transferFormatPicPath}
     rsa:
-      phonePublicKeyPath: 123
-      phonePrivateKeyPath: 33
+      phonePublicKeyPath: ${custom.path.rsa.phonePublicKeyPath}
+      phonePrivateKeyPath: ${custom.path.rsa.phonePrivateKeyPath}

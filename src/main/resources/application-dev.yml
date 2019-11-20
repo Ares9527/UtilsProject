@@ -5,6 +5,12 @@ logging:
 
 custom:
   path:
+    pic:
+      zoomPicPath: E://pic/zoomPic/
+      rotatePicPath: E://pic/rotatePic/
+      waterMarkPicPath: E://pic/waterMarkPic/
+      tailorPicPath: E://pic/tailorPic/
+      transferFormatPicPath: E://pic/transferFormat/
     rsa:
       # 手机RSA加密专用秘钥
       phonePublicKeyPath: E://rsa/publicKey.pem
