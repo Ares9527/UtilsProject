@@ -3,9 +3,8 @@ package com.selfimpr.base.uniformException;
 import com.selfimpr.base.uniformDataReturn.UniformResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @ControllerAdvice 表示定义全局控制器异常处理
  */
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
     private final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
@@ -33,7 +32,6 @@ public class GlobalExceptionHandler {
      * @return
      * @throws Exception
      */
-    @ResponseBody
     @ExceptionHandler(value = CustomException.class)
     public UniformResult customExceptionHandler(HttpServletRequest req, CustomException e) throws Exception {
         log.error("------------------>捕捉到全局异常CustomException", e);
