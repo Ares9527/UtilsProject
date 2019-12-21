@@ -1,6 +1,7 @@
 package com.selfimpr.validator;
 
 import cn.hutool.core.lang.Validator;
+import cn.hutool.core.util.IdcardUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.ParseException;
@@ -521,4 +522,18 @@ public class IdCardUtil {
         return years[(year - start) % years.length];
     }
 
+    public static void main(String[] args) {
+        String id15 = "510108871125243";
+        System.out.println("15位身份证号码：" + id15);
+        System.out.println("判断是否有效：" + IdcardUtil.isValidCard(id15));
+        System.out.println("转换为18位身份证号码：" + IdcardUtil.convert15To18(id15));
+
+        System.out.println("获取生日：" + IdcardUtil.getBirthByIdCard(id15));
+        System.out.println("获取年龄：" + IdcardUtil.getAgeByIdCard(id15));
+        System.out.println("获取出生年：" + IdcardUtil.getYearByIdCard(id15));
+        System.out.println("获取出生月：" + IdcardUtil.getMonthByIdCard(id15));
+        System.out.println("获取出生天：" + IdcardUtil.getDayByIdCard(id15));
+        System.out.println("获取性别：" + IdcardUtil.getGenderByIdCard(id15));
+        System.out.println("获取省份：" + IdcardUtil.getProvinceByIdCard(id15));
+    }
 }
