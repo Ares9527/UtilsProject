@@ -1,5 +1,6 @@
 package com.selfimpr.validator;
 
+import cn.hutool.core.lang.Validator;
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.ParseException;
@@ -210,6 +211,16 @@ public class IdCardUtil {
         }
         // 将身份证的第18位与算出来的校码进行匹配，不相等就为假
         return idCard18Code.equalsIgnoreCase(checkCode);
+    }
+
+    /**
+     * 校验18位身份证 —— hutool
+     *
+     * @param idCard
+     * @return
+     */
+    private static boolean validate18IdCard2(String idCard) {
+        return Validator.isCitizenId(idCard);
     }
 
     /**
