@@ -1,5 +1,6 @@
 package com.selfimpr.validator;
 
+import cn.hutool.core.lang.Validator;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.regex.Pattern;
@@ -25,6 +26,19 @@ public class ValidatorUtils {
             return false;
         }
         return PHONE_PATTERN.matcher(phone).matches();
+    }
+
+    /**
+     * 校验字符串是不是 手机号码 —— hutool
+     *
+     * @param phone
+     * @return
+     */
+    public static boolean validatePhone2(String phone) {
+        if (StringUtils.isBlank(phone)) {
+            return false;
+        }
+        return Validator.isMobile(phone);
     }
 
     /**
