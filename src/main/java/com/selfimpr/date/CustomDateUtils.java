@@ -167,6 +167,16 @@ public class CustomDateUtils {
     }
 
     /**
+     * Date 转换为 LocalDateTime2
+     *
+     * @param date Date
+     * @return LocalDateTime
+     */
+    public static LocalDateTime date2LocalDateTime2(Date date) {
+        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+    }
+
+    /**
      * Date 转换为 LocalDate
      *
      * @param date Date
