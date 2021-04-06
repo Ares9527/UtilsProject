@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -338,7 +339,16 @@ public class ExcelUtils {
         // HSSFWorkbook：是操作Excel2003以前（包括2003）的版本，扩展名是.xls
         // XSSFWorkbook：是操作Excel2007的版本，扩展名是.xlsx
         // 对于不同版本的EXCEL文档要使用不同的工具类
-        Workbook wb = new XSSFWorkbook();
+
+        // 由于xlsx底层使用xml存储，占用内存会比较大，官方也意识到这个问题，在3.8版本之后，提供了SXSSFWorkbook来优化写性能。
+//        Workbook wb = new XSSFWorkbook();
+
+        // 导出优化
+        // https://mp.weixin.qq.com/s/ngfI2zDe8nis9a6XTVgJUQ
+        // 其原理是可以定义一个window size（默认100），生成Excel期间只在内存维持window size那么多的行数Row，
+        // 超时window size时会把之前行Row写到一个临时文件并且remove释放掉，这样就可以达到释放内存的效果。
+        // SXSSFSheet在创建Row时会判断并刷盘、释放超过window size的Row。
+        Workbook wb = new SXSSFWorkbook(new XSSFWorkbook());
 
         // 拆分数据到不同的表格sheet
         int dataSize = dataList.size();
